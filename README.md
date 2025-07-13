@@ -1,0 +1,7 @@
+This project is for Academic Purposes only!
+___________________________________________________________________________________________________________________________
+
+This web application is designed for the sole purpose of modernizing transactions within small scale pharmacies in hopes
+of lightening the burden of manual documentation and digitizing database storage for convenient use.
+
+___________________________________________________________________________________________________________________________
