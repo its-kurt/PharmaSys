@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--Begin HTML page-->
+<html lang="en">
+
+    <!--This portion of the code declares the values that will be present in the header. The header is the text on the tab overview-->
+    <head>
+        <!--declare what are the characters involved-->
+        <meta charset="utf=8">
+        <!--This line is what declares the website to be flexible with the user's screen. without it, it cannot be cross compatible between phones and computers-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <!--below this is the line that wil show on the page head-->
+        <title>
+            Website
+        </title>
+
+        <!--the function below calls the css file we made to style out all of the html files.-->
+        <link rel="stylesheet" href="TheBranding.css">
+    </head>
+
+    <!--This portion of the code is the body initialization. the class declaration creates the specifics that the application can work with, beginning with the color utilization and positioning-->
+    <body class="bg-brand-50 flex items-center justify-center min-h-screen">
+        <!--Declaring the first h value initializes the contents on the top most layer of the page. this is where it is present-->
+        <h1>
+            Title layer
+        </h1>
+        <!--The br function pushes the next text lines to appear below the previous text line. applies to objects-->
+        <br>
+        I am fucking here
+        <!--The paragraph function creates a compilable text area for structured descriptions and whatever. Here, we can properly lay out as much text as we want, with the assistance of br-->
+        <p>
+            This paragraph is for testing whether the functions entered can be properly compiled into a paragraph format for proper restructuring.
+            <br>
+            Failure to perform the tasks results in failure of program
+        </p>
+
+        <!--The div function is how to create "classes" in html. This one creates a hyperlink section, divided from the rest of the script-->
+        <div class="mt-4 flex justify-between text-sm text-stone-500">
+            <!--The a function below is an anchor. This allows us to create href attributes, standing for Hyperlink, which can let us be redirected to the target website being indicated-->
+            <a href="#" class="hover:underline">
+                Forgot password?
+            </a>
+            <!--Same thing as above, almighty href. But this time, we patched that shit-->
+            <a href="Web_SignUp.html" class="text-brand-600 hover:underline">
+                Create account
+            </a>
+        </div>
+
+    </body>
+
+</html>

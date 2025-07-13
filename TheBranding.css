@@ -1,0 +1,13 @@
+/*The line below sets the general values for every component in the entire html file that this css file references*/
+html {
+    font-family: Inter, sans-serif;
+}
+/*The line below sets the general values for every component in the body of the html file that this css file references*/
+body{
+    background-color:lightcyan;
+    color:black;
+}
+/*The line below sets the general values for every component in the anchor, or "a", of the html file that this css file references*/
+a{
+    color:blue;
+}
