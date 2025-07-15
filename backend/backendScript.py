@@ -6,3 +6,11 @@ import csv
 #This is what we will use for the whole code. flask, exclusively. 
 from flask import Flask, request, redirect, send_from_directory
 
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('Login.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
