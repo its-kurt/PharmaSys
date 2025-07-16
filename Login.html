@@ -11,46 +11,76 @@
         <!--We are changing plans. Using bootstrap instead. Tailwind is too internet greedy-->
         <link   
                 rel="stylesheet" 
-                href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
-                integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9yj0n8" 
-                crossorigin="anonymous"
+                href="TheBranding.css" 
         >
-        <!--This line indicates the location of the css file in the program. Needed to be specific.-->
-        <link rel="stylesheet" href="{{ url_for('static', filename='TheBranding.css') }}">
         <!--below this is the line that wil show on the page head-->
         <title>
-            Pharmasys
+            PharmaSys Login
         </title>
     </head>
 
     <!--This portion of the code is the body initialization. the class declaration creates the specifics that the application can work with, beginning with the color utilization and positioning-->
     <body class="bg-brand-50 flex items-center justify-center min-h-screen">
-        <!--Declaring the first h value initializes the contents on the top most layer of the page. this is where it is present-->
-        <h1>
-            Title layer
-        </h1>
-        <!--The br function pushes the next text lines to appear below the previous text line. applies to objects-->
-        <br>
-        I am fucking here
-        <!--The paragraph function creates a compilable text area for structured descriptions and whatever. Here, we can properly lay out as much text as we want, with the assistance of br-->
-        <p>
-            This paragraph is for testing whether the functions entered can be properly compiled into a paragraph format for proper restructuring.
-            <br>
-            Failure to perform the tasks results in failure of program
-        </p>
-
-        <!--The div function is how to create "classes" in html. This one creates a hyperlink section, divided from the rest of the script-->
-        <div class="mt-4 flex justify-between text-sm text-stone-500">
-            <!--The a function below is an anchor. This allows us to create href attributes, standing for Hyperlink, which can let us be redirected to the target website being indicated-->
-            <a href="#" class="hover:underline">
-                Forgot password?
-            </a>
-            <!--Same thing as above, almighty href. But this time, we patched that shit-->
-            <a href="Web_SignUp.html" class="text-brand-600 hover:underline">
-                Create account
-            </a>
-        </div>
-
+        <!--Since this is the log in page, we can squeeze the pad into a main class-->
+        <main class="w-full max-w-sm bg-white rounded-2xl shadow-lg border border-brand-100 p-6">
+            <!--This is the first row of the program, import logo soon-->
+            <h1 class="text-center text-2xl font-semibold text-stone-800 mb-6">
+                PharmaSys
+            </h1>
+            <!--This section is the initialization for the form entry for log in. everything will be compiled and sent to the backend script immediately after pressing a button-->
+            <form class="space-y-4" method="post" action="fillThisUpLater">
+                <!--employee-->
+                <div>
+                    <input
+                        id="employeeId"
+                        name="employeeId"
+                        type="text"
+                        placeholder="Employee ID"
+                        class="w-full px-4 py-2 border border-brand-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 transition"
+                        required
+                    />
+                </div>
+                <!--User-->
+                <div>
+                    <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        placeholder="Username"
+                        class="w-full px-4 py-2 border border-brand-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 transition"
+                        required
+                    />
+                </div>
+                <!--Password-->
+                <div>
+                    <input
+                        id="password"
+                        name="password"
+                        type="text"
+                        placeholder="password"
+                        class="w-full px-4 py-2 border border-brand-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 transition"
+                        required
+                    />
+                </div>
+                <button
+                    type="submit"
+                    class="w-full py-2 rounded-lg bg-brand-500 text-white font-medium hover:bg-brand-600 transition"
+                >
+                    Log In
+                </button>
+            </form>
+            <!--The div function is how to create "classes" in html. This one creates a hyperlink section, divided from the rest of the script-->
+            <div class="mt-4 flex justify-between text-sm text-stone-500">
+                <!--The a function below is an anchor. This allows us to create href attributes, standing for Hyperlink, which can let us be redirected to the target website being indicated-->
+                <a href="#" class="hover:underline">
+                    Forgot password?
+                </a>
+                <!--Same thing as above, almighty href. But this time, we patched that shit-->
+                <a href="Web_SignUp.html" class="text-brand-600 hover:underline">
+                    Create account
+                </a>
+            </div>
+        </main>
     </body>
 
 </html>
