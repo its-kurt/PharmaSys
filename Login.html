@@ -9,7 +9,12 @@
         <!--This line is what declares the website to be flexible with the user's screen. without it, it cannot be cross compatible between phones and computers-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <!--We are changing plans. Using bootstrap instead. Tailwind is too internet greedy-->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9yj0n8" crossorigin="anonymous">
+        <link   
+                rel="stylesheet" 
+                href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
+                integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9yj0n8" 
+                crossorigin="anonymous"
+        >
         <!--This line indicates the location of the css file in the program. Needed to be specific.-->
         <link rel="stylesheet" href="{{ url_for('static', filename='TheBranding.css') }}">
         <!--below this is the line that wil show on the page head-->
