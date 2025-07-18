@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<!--Begin HTML page-->
+<html lang="en">
+
+    <!--This portion of the code declares the values that will be present in the header. The header is the text on the tab overview-->
+    <head>
+        <!--declare what are the characters involved-->
+        <meta charset="utf-8">
+        <!--This line is what declares the website to be flexible with the user's screen. without it, it cannot be cross compatible between phones and computers-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <!--Link to our custom utility CSS-->
+        <link rel="stylesheet" href="TheBranding.css">
+        <!--below this is the line that will show on the page head-->
+        <title>
+            PharmaSys Sign Up
+        </title>
+    </head>
+
+    <!--This portion of the code is the body initialization. the class declaration creates the specifics that the application can work with, beginning with the color utilization and positioning-->
+    <body class="font-sans bg-cyan-50 text-black flex items-center justify-center" style="min-height: 100vh;">
+        <!--Container for the signup form-->
+        <main class="container m-4 p-4" style="
+            background-color: white;
+            border: 1px solid var(--color-bg);
+            border-radius: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 20rem;
+            width: 100%;
+        ">
+            <!--Form title-->
+            <h1 class="m-4 text-black" style="font-size: 1.5rem; font-weight: 600; text-align: center;">
+                Create Account
+            </h1>
+
+            <!--Signup form begins here-->
+            <form class="m-2" method="post" action="fillThisUpLater">
+                <!--First row: First name + Last name-->
+                <div class="flex justify-between m-2">
+                    <input
+                        id="firstName"
+                        name="firstName"
+                        type="text"
+                        placeholder="First Name"
+                        class="p-2"
+                        style="
+                            width: calc(50% - var(--space-2));
+                            border: 1px solid var(--color-text);
+                            border-radius: 0.5rem;
+                        "
+                        required
+                    />
+                    <input
+                        id="lastName"
+                        name="lastName"
+                        type="text"
+                        placeholder="Last Name"
+                        class="p-2"
+                        style="
+                            width: calc(50% - var(--space-2));
+                            border: 1px solid var(--color-text);
+                            border-radius: 0.5rem;
+                        "
+                        required
+                    />
+                </div>
+
+                <!--Second row: Employee ID-->
+                <div class="m-2">
+                    <input
+                        id="employeeId"
+                        name="employeeId"
+                        type="text"
+                        placeholder="Employee ID"
+                        class="p-2"
+                        style="
+                            width: 100%;
+                            border: 1px solid var(--color-text);
+                            border-radius: 0.5rem;
+                        "
+                        required
+                    />
+                </div>
+
+                <!--Third row: Username-->
+                <div class="m-2">
+                    <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        placeholder="Username"
+                        class="p-2"
+                        style="
+                            width: 100%;
+                            border: 1px solid var(--color-text);
+                            border-radius: 0.5rem;
+                        "
+                        required
+                    />
+                </div>
+
+                <!--Fourth row: Password-->
+                <div class="m-2">
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="Password"
+                        class="p-2"
+                        style="
+                            width: 100%;
+                            border: 1px solid var(--color-text);
+                            border-radius: 0.5rem;
+                        "
+                        required
+                    />
+                </div>
+
+                <!--Fifth row: Confirm Password-->
+                <div class="m-2">
+                    <input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type="password"
+                        placeholder="Confirm Password"
+                        class="p-2"
+                        style="
+                            width: 100%;
+                            border: 1px solid var(--color-text);
+                            border-radius: 0.5rem;
+                        "
+                        required
+                    />
+                </div>
+
+                <!--Last row: Submit button-->
+                <button
+                    type="submit"
+                    class="m-2 p-2"
+                    style="
+                        width: 100%;
+                        border: none;
+                        border-radius: 0.5rem;
+                        background-color: var(--color-link);
+                        color: white;
+                    "
+                >
+                    Sign Up
+                </button>
+            </form>
+            <div class="m-4 flex justify-between" style="font-size: 0.875rem; color: var(--color-link);">
+                <!--The a function below is an anchor. This allows us to create href attributes, standing for Hyperlink, which can let us be redirected to the target website being indicated-->
+                <a>
+                    Already have an account?
+                </a>
+                <!--Same thing as above, almighty href. But this time, we patched that shit-->
+                <a href="Login.html" class="hover:underline" style="color: var(--color-link);">
+                    Login
+                </a>
+            </div>
+        </main>
+    </body>
+
+</html>
