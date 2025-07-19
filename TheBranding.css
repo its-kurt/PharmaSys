@@ -21,6 +21,7 @@
   box-sizing: border-box;
 }
 
+/*THE COMPONENT ATTRIBUTES*/
 /*The line below sets the general values for every component in the entire html file that this css file references*/
 html {
     font-family: Inter, sans-serif;
