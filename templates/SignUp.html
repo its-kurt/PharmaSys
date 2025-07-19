@@ -9,7 +9,7 @@
         <!--This line is what declares the website to be flexible with the user's screen. without it, it cannot be cross compatible between phones and computers-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <!--Link to our custom utility CSS-->
-        <link rel="stylesheet" href="TheBranding.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='TheBranding.css') }}">
         <!--below this is the line that will show on the page head-->
         <title>
             PharmaSys Sign Up
@@ -32,7 +32,7 @@
                 <img 
                     width="300"
                     height="300"
-                    src="/Assets/Logo.png" 
+                    src="{{ url_for('static', filename='Assets/Logo.png') }}"
                     alt="PharmaSys" 
                     class="h-12"
                 />
@@ -163,7 +163,7 @@
                     Already have an account?
                 </a>
                 <!--Same thing as above, almighty href. But this time, we patched that shit-->
-                <a href="Login.html" class="hover:underline" style="color: var(--color-link);">
+                <a href="{{ url_for('LogIn.html') }}" class="hover:underline" style="color: var(--color-link);">
                     Login
                 </a>
             </div>

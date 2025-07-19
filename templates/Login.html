@@ -11,7 +11,7 @@
         <!--Link to our custom utility CSS-->
         <link   
             rel="stylesheet" 
-            href="TheBranding.css" 
+            href="{{ url_for('static', filename='TheBranding.css') }}"
         >
         <!--below this is the line that will show on the page head-->
         <title>
@@ -19,7 +19,8 @@
         </title>
     </head>
 
-    <!--This portion of the code is the body initialization. the class declaration creates the specifics that the application can work with, beginning with the color utilization and positioning-->
+    <!--This portion of the code is the body initialization.
+    The class declaration creates the specifics that the application can work with, beginning with the color utilization and positioning-->
     <body class="font-sans bg-cyan-50 text-black flex items-center justify-center" style="min-height: 100vh;">
         <!--Since this is the log in page, we can squeeze the pad into a main class-->
         <main class="container p-4" style=
@@ -34,7 +35,7 @@
                 <img 
                     width="300"
                     height="300"
-                    src="/Assets/Logo.png" 
+                    src="{{ url_for('static', filename='Assets/Logo.png') }}"
                     alt="PharmaSys" 
                     class="h-12"
                 />
@@ -43,7 +44,8 @@
             <h1 class="m-4 text-black" style="font-size: 1.5rem; font-weight: 600; text-align: center;">
                 Login
             </h1>
-            <!--This section is the initialization for the form entry for log in. everything will be compiled and sent to the backend script immediately after pressing a button-->
+            <!--This section is the initialization for the form entry for log in. 
+            Everything will be compiled and sent to the backend script immediately after pressing a button-->
             <form class="m-2" method="post" action="/submit">
                 <!--employee-->
                 <div class="m-2">
@@ -91,12 +93,13 @@
             </form>
             <!--The div function is how to create "classes" in html. This one creates a hyperlink section, divided from the rest of the script-->
             <div class="m-4 flex justify-between" style="font-size: 0.875rem; color: var(--color-link);">
-                <!--The a function below is an anchor. This allows us to create href attributes, standing for Hyperlink, which can let us be redirected to the target website being indicated-->
+                <!--The a function below is an anchor. This allows us to create href attributes
+                standing for Hyperlink, which can let us be redirected to the target website being indicated-->
                 <a>
                     Forgot password?
                 </a>
                 <!--Same thing as above, almighty href. But this time, we patched that shit-->
-                <a href="SignUp.html" class="hover:underline" style="color: var(--color-link);">
+                <a href="{{ url_for('signup_page') }}" class="hover:underline" style="color: var(--color-link);">
                     Create account
                 </a>
             </div>
