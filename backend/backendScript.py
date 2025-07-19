@@ -11,15 +11,16 @@ app.secret_key = 'a_very_secret_key_for_session_management' # Required for flash
 
 
 ##login back end script-----------------------------------------------------------------------------------------------
-
+##the back slash is an appending prefix with the GET method implying a request from the html
 @app.route('/', methods=['GET'])
+##no idea why its called index but hey
 def index():
     #Renders the initial form page.
     return render_template('form.html')
-
+##strangely enough, main is self referenced. ok. sure
 if __name__ == '__main__':
     app.run(debug=True)
-
+##depending on what the action states, this is returned and simulated.
 @app.route('/submit', methods=['POST'])
 def submit_form():
     #Handles form submission and performs validation.
