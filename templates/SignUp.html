@@ -43,7 +43,7 @@
             </h1>
 
             <!--Signup form begins here-->
-            <form class="m-2" method="post" action="fillThisUpLater">
+            <form class="m-2" method="post" action="{{ url_for('submit_signup') }}">
                 <!--First row: First name + Last name-->
                 <div class="flex justify-between m-2">
                     <input
@@ -163,7 +163,7 @@
                     Already have an account?
                 </a>
                 <!--Same thing as above, almighty href. But this time, we patched that shit-->
-                <a href="{{ url_for('LogIn.html') }}" class="hover:underline" style="color: var(--color-link);">
+                <a href="{{ url_for('index') }}" class="hover:underline" style="color: var(--color-link);">
                     Login
                 </a>
             </div>
