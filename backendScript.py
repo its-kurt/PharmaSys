@@ -162,7 +162,10 @@ def submit_signup():
             connection = None
             cursor = None
             try:
+                # print in console for debugging purposes. This let's us verify if task is thrown at the plugging process of form to csv
                 print("Inserting new user:", employeeId, username)
+                # mysql uses connection and cursor for db configuration
+                # WARNING: CREATE A db_config FUNCTION TO MAKE THIS WORK
                 connection = mysql.connector.connect(**db_config)
                 cursor = connection.cursor()
                 # Insert the account into the users database

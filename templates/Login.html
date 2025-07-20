@@ -95,9 +95,10 @@
             <div class="m-4 flex justify-between" style="font-size: 0.875rem; color: var(--color-link);">
                 <!--The a function below is an anchor. This allows us to create href attributes
                 standing for Hyperlink, which can let us be redirected to the target website being indicated-->
-                <a>
+                <!--Lets use b instead of a for non anchor related text-->
+                <b>
                     Forgot password?
-                </a>
+                </b>
                 <!--Same thing as above, almighty href. But this time, we patched that shit-->
                 <a href="{{ url_for('signup_page') }}" class="hover:underline" style="color: var(--color-link);">
                     Create account
