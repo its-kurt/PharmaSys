@@ -5,9 +5,20 @@ import os
 import csv
 #This is what we will use for the whole code. flask, exclusively. 
 from flask import Flask, render_template, request, redirect, url_for, flash
+#MySQL connector for backend integration
+import mysql.connector
+
 #This line is needed to initialize flask
 app = Flask(__name__)
 app.secret_key = 'a_very_secret_key_for_session_management' # Required for flash messages
+
+# MySQL database config block
+db_config = {
+    'host': 'localhost',
+    'user': 'your_mysql_user',
+    'password': 'your_mysql_password',
+    'database': 'pharmacy'
+}
 
 
 ##LOG IN SECTION-----------------------------------------------------------------------------------------------
@@ -55,14 +66,36 @@ def submit_form():
                                    username=username,
                                    employeeId=employeeId) # Pass back submitted data to pre-fill form
         else:
-            # If validation succeeds, process the data (e.g., save to a database)
-            # For this example, we'll just redirect to a success page
-            flash('Form submitted successfully!', 'success')
+            # If validation succeeds, process the data (e.g., validate against DB)
+            try:
+                connection = mysql.connector.connect(**db_config)
+                cursor = connection.cursor()
+                print("Trying to insert user into database...")
+                cursor.execute(
+                    "INSERT INTO users (ID, role, Username, Password, status, FirstName, LastName) "
+                    "VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                    (employeeId, 'user', username, password, 'active', firstName, lastName)
+                )
+                connection.commit()
+                print("User inserted successfully.")
 
-            return redirect(url_for('success'))
+                user = cursor.fetchone()
+                if user:
+                    flash('Login successful!', 'success')
+                    return redirect(url_for('success_page'))
+                else:
+                    flash('Invalid credentials.', 'error')
+                    return render_template('Login.html')
+            except mysql.connector.Error as err:
+                flash(f'Database error: {err}', 'error')
+                return render_template('Login.html')
+            finally:
+                if connection.is_connected():
+                    cursor.close()
+                    connection.close()
     return redirect(url_for('index')) # Redirect if accessed via GET
 
-@app.route('/submit')
+@app.route('/success')
 def success_page():
     #Renders a success page after successful form submission.
     return render_template('success.html')
@@ -73,10 +106,11 @@ def signup_page():
     #Renders the signup form page, which in this case, is SignUp.html
     return render_template('SignUp.html')
 
+# This is where the signup will check
 @app.route('/signup', methods=['POST'])
 def submit_signup():
-    #Handles form submission and performs validation for the signup form.
     if request.method == 'POST':
+        # These are variables to be retrieved from the signup page
         firstName = request.form.get('firstName')
         lastName = request.form.get('lastName')
         employeeId = request.form.get('employeeId')
@@ -86,48 +120,64 @@ def submit_signup():
 
         errors = []
 
-        # Server-side validation logic
+        # We want to check if any values are empty
         if not firstName:
             errors.append("First name is required.")
         if not lastName:
             errors.append("Last name is required.")
-
         if not employeeId:
             errors.append("Employee ID is required.")
         elif len(employeeId) > 8:
             errors.append("Invalid Employee ID.")
-
         if not username:
             errors.append("Username is required.")
         elif len(username) < 3:
             errors.append("Username must be at least 3 characters long.")
-
         if not password:
             errors.append("Password is required.")
         elif len(password) < 8:
             errors.append("Password must be at least 8 characters long.")
-
         if not confirmPassword:
             errors.append("Please confirm your password.")
         elif password != confirmPassword:
             errors.append("Passwords do not match.")
 
+        # Check if any errors exist and flash them
         if errors:
-            # If validation fails, re-render the form with error messages
             for error in errors:
-                flash(error, 'error') # 'error' is a category for styling
+                flash(error, 'error')
+            print("Validation errors (signup):", errors)
             return render_template('SignUp.html',
                                    firstName=firstName,
                                    lastName=lastName,
                                    username=username,
                                    employeeId=employeeId)
         else:
-            # If validation succeeds, process the data (e.g., save to a database)
-            # For this example, we'll just redirect to a success page
-            flash('Account created successfully!', 'success')
-
-            return redirect(url_for('success'))
-    return redirect(url_for('signup_page')) # Redirect if accessed via GET
+            connection = None
+            cursor = None
+            try:
+                print("Inserting new user:", employeeId, username)
+                connection = mysql.connector.connect(**db_config)
+                cursor = connection.cursor()
+                # Insert the account into the users database
+                cursor.execute(
+                    "INSERT INTO users (ID, role, Username, Password, status, FirstName, LastName) "
+                    "VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                    (employeeId, 'user', username, password, 'active', firstName, lastName)
+                )
+                connection.commit()
+                flash('Account created successfully!', 'success')
+                print("Signup successful. Redirecting to success page.")
+                return redirect(url_for('success_page'))
+            except mysql.connector.Error as err:
+                flash(f'Database error: {err}', 'error')
+                print("MySQL error (signup):", err)
+                return render_template('SignUp.html')
+            finally:
+                if connection and connection.is_connected():
+                    cursor.close()
+                    connection.close()
+    return redirect(url_for('signup_page'))
 
 
 
