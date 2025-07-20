@@ -70,19 +70,20 @@ def submit_form():
             try:
                 connection = mysql.connector.connect(**db_config)
                 cursor = connection.cursor()
+                ##PATCH THIS ERROR! IT'S SUPPOSED TO BE GET AND COMPARE, NOT INSERT
                 print("Trying to insert user into database...")
                 cursor.execute(
-                    "INSERT INTO users (ID, role, Username, Password, status, FirstName, LastName) "
-                    "VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                    (employeeId, 'user', username, password, 'active', firstName, lastName)
+                    "INSERT INTO users (ID, Username, Password, status) "
+                    "VALUES (%s, %s, %s)",
+                    (employeeId, username, password)
                 )
                 connection.commit()
-                print("User inserted successfully.")
+                print("User logged in successfully.")
 
                 user = cursor.fetchone()
                 if user:
-                    flash('Login successful!', 'success')
-                    return redirect(url_for('success_page'))
+                    flash('Login successful!', 'LoginSucess')
+                    return redirect(url_for('LoginSuccess_page'))
                 else:
                     flash('Invalid credentials.', 'error')
                     return render_template('Login.html')
@@ -95,9 +96,14 @@ def submit_form():
                     connection.close()
     return redirect(url_for('index')) # Redirect if accessed via GET
 
+@app.route('/LoginSucess')
+def LoginSuccess_page():
+    #Renders a success page after successful Login form submission.
+    return render_template('LoginSuccess.html')
+
 @app.route('/success')
 def success_page():
-    #Renders a success page after successful form submission.
+    #Renders a success page after successful Signup form submission.
     return render_template('success.html')
 
 
