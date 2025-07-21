@@ -1,16 +1,14 @@
 # I screwed up with the last backend file so I'm remaking it all over again
-#The line below allows the script to skim through the operating system directory. of course, we can change that to just detect the web files and the sql, but for prototype reasons, yeah
-import os
-#csv for prototype for now
-import csv
 #This is what we will use for the whole code. flask, exclusively. 
+import os  # needed for loading secret key from environment
 from flask import Flask, render_template, request, redirect, url_for, flash
+from werkzeug.security import generate_password_hash, check_password_hash  # for secure password handling
 #MySQL connector for backend integration
 import mysql.connector
 
 #This line is needed to initialize flask
 app = Flask(__name__)
-app.secret_key = 'a_very_secret_key_for_session_management' # Required for flash messages
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'a_very_secret_key_for_session_management')  # Required for flash messages; load from env
 
 # MySQL database config block
 db_config = {
@@ -66,24 +64,20 @@ def submit_form():
                                    username=username,
                                    employeeId=employeeId) # Pass back submitted data to pre-fill form
         else:
-            # If validation succeeds, process the data (e.g., validate against DB)
+            connection = None
+            cursor = None
             try:
                 connection = mysql.connector.connect(**db_config)
                 cursor = connection.cursor()
-                ##PATCH THIS ERROR! IT'S SUPPOSED TO BE GET AND COMPARE, NOT INSERT
-                print("Trying to insert user into database...")
+                # Verify credentials instead of inserting
                 cursor.execute(
-                    "INSERT INTO users (ID, Username, Password, status) "
-                    "VALUES (%s, %s, %s)",
-                    (employeeId, username, password)
+                    "SELECT ID, Password FROM users WHERE ID=%s",
+                    (employeeId,)
                 )
-                connection.commit()
-                print("User logged in successfully.")
-
                 user = cursor.fetchone()
-                if user:
-                    flash('Login successful!', 'LoginSucess')
-                    return redirect(url_for('LoginSuccess_page'))
+                if user and check_password_hash(user[1], password):
+                    flash('Login successful!', 'success')
+                    return redirect(url_for('login_success_page'))
                 else:
                     flash('Invalid credentials.', 'error')
                     return render_template('Login.html')
@@ -91,13 +85,14 @@ def submit_form():
                 flash(f'Database error: {err}', 'error')
                 return render_template('Login.html')
             finally:
-                if connection.is_connected():
+                if cursor:
                     cursor.close()
+                if connection and connection.is_connected():
                     connection.close()
     return redirect(url_for('index')) # Redirect if accessed via GET
 
-@app.route('/LoginSucess')
-def LoginSuccess_page():
+@app.route('/login_success')
+def login_success_page():
     #Renders a success page after successful Login form submission.
     return render_template('LoginSuccess.html')
 
@@ -164,15 +159,15 @@ def submit_signup():
             try:
                 # print in console for debugging purposes. This let's us verify if task is thrown at the plugging process of form to csv
                 print("Inserting new user:", employeeId, username)
-                # mysql uses connection and cursor for db configuration
-                # WARNING: CREATE A db_config FUNCTION TO MAKE THIS WORK
                 connection = mysql.connector.connect(**db_config)
                 cursor = connection.cursor()
+                # hash password before storing
+                hashed_password = generate_password_hash(password)
                 # Insert the account into the users database
                 cursor.execute(
                     "INSERT INTO users (ID, role, Username, Password, status, FirstName, LastName) "
                     "VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                    (employeeId, 'user', username, password, 'active', firstName, lastName)
+                    (employeeId, 'user', username, hashed_password, 'active', firstName, lastName)
                 )
                 connection.commit()
                 flash('Account created successfully!', 'success')
@@ -183,8 +178,9 @@ def submit_signup():
                 print("MySQL error (signup):", err)
                 return render_template('SignUp.html')
             finally:
-                if connection and connection.is_connected():
+                if cursor:
                     cursor.close()
+                if connection and connection.is_connected():
                     connection.close()
     return redirect(url_for('signup_page'))
 
@@ -192,4 +188,5 @@ def submit_signup():
 
 ##This is what starts flask. 
 if __name__ == '__main__':
-    app.run(debug=True) # debug=True allows for automatic reloads and detailed error messages
+    debug_mode = os.environ.get('FLASK_DEBUG', False)
+    app.run(debug=bool(debug_mode))  # debug controlled via environment
