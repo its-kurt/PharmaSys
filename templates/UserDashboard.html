@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    <!--This portion of the code declares the values that will be present in the header. The header is the text on the tab overview-->
     <head>
         <!--declare what are the characters involved-->
         <meta charset="utf-8">
@@ -16,182 +17,154 @@
         </title>
     </head>
 
-<body class="bg-brand-50 flex h-screen">
+<body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>PharmaSys</h1>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" data-tab="dashboard" class="nav-link active">Dashboard</a>
+            <a href="#" data-tab="users" class="nav-link">Users</a>
+            <a href="#" data-tab="inventory" class="nav-link">Inventory</a>
+            <a href="#" data-tab="receipts" class="nav-link">Receipts</a>
+        </nav>
+    </aside>
 
-  <!-- SIDEBAR -->
-  <aside class="w-64 bg-white border-r border-brand-100">
-    <div class="p-6 flex justify-center">
-      <img src="/assets/.png" alt="PharmaSys" class="h-10"/>
-    </div>
-    <nav class="px-4 space-y-2">
-      <a href="#" data-tab="dashboard" class="block px-4 py-2 rounded-lg bg-brand-100 text-brand-700 font-medium">
-        Dashboard
-      </a>
-      <a href="#" data-tab="users" class="block px-4 py-2 rounded-lg text-stone-700 hover:bg-brand-50">
-        Users
-      </a>
-      <a href="#" data-tab="inventory" class="block px-4 py-2 rounded-lg text-stone-700 hover:bg-brand-50">
-        Inventory
-      </a>
-      <a href="#" data-tab="receipts" class="block px-4 py-2 rounded-lg text-stone-700 hover:bg-brand-50">
-        Receipts
-      </a>
-    </nav>
-  </aside>
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content">
+        <!-- Dashboard Tab -->
+        <section id="dashboard-section">
+            <h1 class="section-title">Dashboard</h1>
+            <div class="dashboard-card">
+                <div class="dashboard-info">
+                    <p id="current-admin"><strong>Logged in as:</strong> {{ current_user }}</p>
+                    <p id="account-count"><strong>Accounts registered:</strong> {{ user_count }}</p>
+                    <p id="time-on-screen"><strong>Time on screen:</strong> 0s</p>
+                </div>
+                <button id="logout-btn" class="logout-btn">Logout</button>
+            </div>
+        </section>
 
-  <!-- MAIN CONTENT AREA -->
-  <main class="flex-1 p-6 overflow-auto">
-    <!-- Dashboard Tab -->
-    <section id="dashboard-section">
-      <!-- Text to be referenced for the UI -->
-      <p id="current-admin" class="text-lg font-semibold text-stone-800 mb-2">Logged in as: …</p>
-      <p id="account-count" class="text-stone-700 mb-2">Accounts registered: …</p>
-      <p id="time-on-screen" class="text-stone-700 mb-4">Time on screen: 0s</p>
-      <!-- This is the log out button -->
-      <button
-        id="logout-btn"
-        class="px-4 py-2 bg-brand-500 text-white rounded-lg hover:bg-brand-600 transition"
-      >
-        Logout
-      </button>
-    </section>
+        <!-- Users Tab -->
+        <section id="users-section" class="hidden">
+            <h2 class="section-title">User Accounts</h2>
+            <div class="table-container">
+                <table id="users-table" class="data-table">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+                <div id="users-loading" class="loading-message">Loading user data...</div>
+            </div>
+        </section>
 
-    <!-- Users Tab -->
-    <section id="users-section" class="hidden">
-      <!-- Text to be referenced for the UI -->
-      <h2 class="text-xl font-semibold text-stone-800 mb-4">User Accounts</h2>
-      <!-- You know how the tables can be infinitely added? yeah this thingy makes it so that the table can go on until the table limit -->
-      <div class="overflow-auto">
-        <!-- init table -->
-        <table id="users-table" class="min-w-full bg-white rounded-2xl shadow border border-brand-100">
-          <thead></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
+        <!-- Inventory Tab -->
+        <section id="inventory-section" class="hidden">
+            <h2 class="section-title">Drug Inventory</h2>
+            <div class="table-container">
+                <table id="inventory-table" class="data-table">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+                <div id="inventory-loading" class="loading-message">Loading inventory data...</div>
+            </div>
+        </section>
 
-    <!-- Inventory Tab -->
-    <section id="inventory-section" class="hidden">
-      <h2 class="text-xl font-semibold text-stone-800 mb-4">Drug Inventory</h2>
-      <!-- Same thing as above, really -->
-      <div class="overflow-auto">
-        <table id="inventory-table" class="min-w-full bg-white rounded-2xl shadow border border-brand-100">
-          <thead></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
+        <!-- Receipts Tab -->
+        <section id="receipts-section" class="hidden">
+            <h2 class="section-title">Receipts</h2>
+            <div class="table-container">
+                <table id="receipts-table" class="data-table">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+                <div id="receipts-loading" class="loading-message">Loading receipts data...</div>
+            </div>
+        </section>
+    </main>
 
-    <!-- Receipts Tab -->
-    <section id="receipts-section" class="hidden">
-      <h2 class="text-xl font-semibold text-stone-800 mb-4">Receipts</h2>
-      <div class="overflow-auto">
-        <!-- Incomplete lol -->
-        <table id="receipts-table" class="min-w-full bg-white rounded-2xl shadow border border-brand-100">
-          <thead></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-  </main>
+    <script>
+        const startTime = Date.now();
 
-  <!-- PapaParse for CSV loading -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
-  <script>
-    let loginData = [], drugData = [], receiptsData = [];
-    const startTime = Date.now();
+        // Tab navigation
+        document.querySelectorAll('.nav-link[data-tab]').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
 
-    // 1) Load CSVs
-    Papa.parse('[SQL]Sheets/LoginData.csv', {
-      header: true, download: true,
-      complete: ({ data }) => {
-        // filter out any empty lines
-        loginData = data.filter(r => Object.values(r).some(v => v));
-        initDashboard();
-        populateTable(loginData, 'users-table');
-      }
-    });
+                // Update active link styling
+                document.querySelectorAll('.nav-link').forEach(function(navLink) {
+                    navLink.classList.remove('active');
+                });
+                this.classList.add('active');
 
-    Papa.parse('[SQL]Sheets/DrugDatabase.csv', {
-      header: true, download: true,
-      complete: ({ data }) => {
-        drugData = data.filter(r => Object.values(r).some(v => v));
-        populateTable(drugData, 'inventory-table');
-      }
-    });
-
-    Papa.parse('[SQL]Sheets/Receipts.csv', {
-      header: true, download: true,
-      complete: ({ data }) => {
-        receiptsData = data.filter(r => Object.values(r).some(v => v));
-        populateTable(receiptsData, 'receipts-table');
-      }
-    });
-
-    // 2) Tab navigation
-    document.querySelectorAll('nav a[data-tab]').forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        // Highlight active link
-        document.querySelectorAll('nav a').forEach(a => {
-          a.classList.remove('bg-brand-100','text-brand-700');
+                // Show/hide sections
+                const tab = this.dataset.tab;
+                document.querySelectorAll('main section').forEach(function(section) {
+                    section.classList.add('hidden');
+                });
+                document.getElementById(tab + '-section').classList.remove('hidden');
+            });
         });
-        link.classList.add('bg-brand-100','text-brand-700');
-        // Show/hide sections
-        const tab = link.dataset.tab;
-        document.querySelectorAll('main section').forEach(sec => sec.classList.add('hidden'));
-        document.getElementById(`${tab}-section`).classList.remove('hidden');
-      });
-    });
 
-    // 3) Initialize dashboard values
-    function initDashboard() {
-      const adminName = loginData[0].username || loginData[0].fullName || 'Admin';
-      document.getElementById('current-admin').textContent = `Logged in as: ${adminName}`;
-      document.getElementById('account-count').textContent = `Accounts registered: ${loginData.length}`;
+        // Update "time on screen" every second
+        setInterval(function() {
+            const secs = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('time-on-screen').innerHTML = '<strong>Time on screen:</strong> ' + secs + 's';
+        }, 1000);
 
-      // update “time on screen” every second
-      setInterval(() => {
-        const secs = Math.floor((Date.now() - startTime) / 1000);
-        document.getElementById('time-on-screen').textContent = `Time on screen: ${secs}s`;
-      }, 1000);
-
-      // logout → redirect back to your login page
-      document.getElementById('logout-btn')
-              .addEventListener('click', () => window.location.href = 'Web_LogIn.html');
-    }
-
-    // 4) Generic CSV → HTML table renderer
-    function populateTable(data, tableId) {
-      if (!data.length) return;
-      const table = document.getElementById(tableId);
-      const thead = table.querySelector('thead');
-      const tbody = table.querySelector('tbody');
-      thead.innerHTML = ''; tbody.innerHTML = '';
-
-      // headers
-      const headerRow = document.createElement('tr');
-      Object.keys(data[0]).forEach(col => {
-        const th = document.createElement('th');
-        th.textContent = col;
-        th.classList.add('px-4','py-2','text-left','text-stone-600','bg-brand-50');
-        headerRow.appendChild(th);
-      });
-      thead.appendChild(headerRow);
-
-      // rows
-      data.forEach(row => {
-        const tr = document.createElement('tr');
-        tr.classList.add('hover:bg-brand-50');
-        Object.values(row).forEach(val => {
-          const td = document.createElement('td');
-          td.textContent = val;
-          td.classList.add('px-4','py-2');
-          tr.appendChild(td);
+        // Logout button
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            window.location.href = 'Web_LogIn.html';
         });
-        tbody.appendChild(tr);
-      });
-    }
-  </script>
+
+        // TODO: Replace the function below with a fetch() to call Flask endpoints returning JSON data
+        function populateTable(data, tableId, loadingId) {
+            const table = document.getElementById(tableId);
+            const loadingDiv = document.getElementById(loadingId);
+            const thead = table.querySelector('thead');
+            const tbody = table.querySelector('tbody');
+
+            if (!data || data.length === 0) {
+                if (loadingDiv) {
+                    loadingDiv.textContent = 'No data available';
+                }
+                return;
+            }
+
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+
+            // Create headers
+            const headerRow = document.createElement('tr');
+            Object.keys(data[0]).forEach(function(col) {
+                const th = document.createElement('th');
+                th.textContent = col.charAt(0).toUpperCase() + col.slice(1);
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+
+            // Create rows
+            data.forEach(function(row) {
+                const tr = document.createElement('tr');
+                Object.values(row).forEach(function(val) {
+                    const td = document.createElement('td');
+                    td.textContent = val || '';
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+
+            if (loadingDiv) {
+                loadingDiv.style.display = 'none';
+            }
+        }
+
+        // TODO: Fetch JSON from Flask endpoints and call populateTable()
+        // Example:
+        // fetch('/api/users')
+        //     .then(res => res.json())
+        //     .then(data => populateTable(data, 'users-table', 'users-loading'));
+
+    </script>
 </body>
 </html>

@@ -1,13 +1,17 @@
 # I screwed up with the last backend file so I'm remaking it all over again
-#This is what we will use for the whole code. flask, exclusively. 
+# This is what we will use for the whole code. flask, exclusively.
 import os  # needed for loading secret key from environment
 from flask import Flask, render_template, request, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash  # for secure password handling
-#MySQL connector for backend integration
+# MySQL connector for backend integration
 import mysql.connector
 
-#This line is needed to initialize flask
-app = Flask(__name__)
+# This line is needed to initialize flask
+app = Flask(__name__,
+            static_url_path='/static',
+            static_folder='static',
+            template_folder='templates')
+
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'a_very_secret_key_for_session_management')  # Required for flash messages; load from env
 
 # MySQL database config block
@@ -25,14 +29,14 @@ db_config = {
 @app.route('/', methods=['GET'])
 ##no idea why its called index but hey
 def index():
-    #Renders the initial form page, which in this case, is Login.html
+    # Renders the initial form page, which in this case, is Login.html
     return render_template('Login.html')
 
 ##depending on what the action states, this is returned and simulated.
 ##note: POST is used to simulate actions depending on what is requested on the HTML. e.g. if a button on the form says submit form, then grab that form and init
 @app.route('/login', methods=['POST'])
 def submit_form():
-    #Handles form submission and performs validation.
+    # Handles form submission and performs validation.
     if request.method == 'POST':
         employeeId = request.form.get('employeeId')
         username = request.form.get('username')
@@ -45,7 +49,7 @@ def submit_form():
             errors.append("employeeId is required.")
         elif len(employeeId) > 8:
             errors.append("Invalid employeeId.")
-        
+
         if not username:
             errors.append("Username is required.")
         elif len(username) < 3:
@@ -59,10 +63,10 @@ def submit_form():
         if errors:
             # If validation fails, re-render the form with error messages
             for error in errors:
-                flash(error, 'error') # 'error' is a category for styling
+                flash(error, 'error')  # 'error' is a category for styling
             return render_template('Login.html',
                                    username=username,
-                                   employeeId=employeeId) # Pass back submitted data to pre-fill form
+                                   employeeId=employeeId)  # Pass back submitted data to pre-fill form
         else:
             connection = None
             cursor = None
@@ -89,22 +93,26 @@ def submit_form():
                     cursor.close()
                 if connection and connection.is_connected():
                     connection.close()
-    return redirect(url_for('index')) # Redirect if accessed via GET
+    return redirect(url_for('index'))  # Redirect if accessed via GET
 
 @app.route('/login_success')
 def login_success_page():
-    #Renders a success page after successful Login form submission.
+    # Renders a success page after successful Login form submission.
     return render_template('LoginSuccess.html')
 
 @app.route('/success')
 def success_page():
-    #Renders a success page after successful Signup form submission.
+    # Renders a success page after successful Signup form submission.
     return render_template('success.html')
 
+@app.route('/dashboard', methods=['GET'])
+def dashboard_page():
+    # Section where template for html is declared
+    return render_template('UserDashboard.html')
 
 @app.route('/signup', methods=['GET'])
 def signup_page():
-    #Renders the signup form page, which in this case, is SignUp.html
+    # Renders the signup form page, which in this case, is SignUp.html
     return render_template('SignUp.html')
 
 # This is where the signup will check
@@ -183,7 +191,6 @@ def submit_signup():
                 if connection and connection.is_connected():
                     connection.close()
     return redirect(url_for('signup_page'))
-
 
 
 ##This is what starts flask. 

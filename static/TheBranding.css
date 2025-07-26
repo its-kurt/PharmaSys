@@ -86,3 +86,57 @@ a:focus {
   padding-left: var(--space-4);
   padding-right: var(--space-4);
 }
+
+/* Header Elements */
+h1, h2, h3 {
+  font-family: var(--font-sans);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--space-4);
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: var(--space-2);
+  text-align: left;
+}
+
+th {
+  background-color: #e5f3ff;
+}
+
+/* Button Styling */
+button {
+  font-family: var(--font-sans);
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--color-link);
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--color-link-hover);
+}
+
+/* Utility Class for Cards */
+.card {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+/* Section Spacing Utility */
+.section {
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-4);
+}
