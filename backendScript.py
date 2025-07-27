@@ -17,9 +17,10 @@ app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'a_very_secret_key_for_sessi
 # MySQL database config block
 db_config = {
     'host': 'localhost',
-    'user': 'your_mysql_user',
-    'password': 'your_mysql_password',
-    'database': 'pharmacy'
+    'user': 'root',
+    'password': '',
+    'database': 'pharmasys',
+    'port': 3307 #temporary for server target using xampp
 }
 
 
@@ -72,17 +73,28 @@ def submit_form():
             cursor = None
             try:
                 connection = mysql.connector.connect(**db_config)
-                cursor = connection.cursor()
+                cursor = connection.cursor(dictionary=True)  # fetch results as a dict instead of tuple
                 # Verify credentials instead of inserting
                 cursor.execute(
-                    "SELECT ID, Password FROM users WHERE ID=%s",
+                    "SELECT ID, Password, role FROM LoginData WHERE ID=%s",
                     (employeeId,)
                 )
                 user = cursor.fetchone()
-                if user and check_password_hash(user[1], password):
+                if user and check_password_hash(user['Password'], password):
+                    role = user.get('role', '').lower()
                     flash('Login successful!', 'success')
-                    return redirect(url_for('login_success_page'))
+                    if role == 'admin':
+                        print("Admin Detected")
+                        return redirect(url_for('admin_dashboard'))
+                    elif role == 'user':
+                        print("User Detected")
+                        return redirect(url_for('dashboard_page'))
+                    else:
+                        print("who u")
+                        flash('Unknown role. Access denied.', 'error')
+                        return render_template('Login.html')
                 else:
+                    print("No account or invalid creds")
                     flash('Invalid credentials.', 'error')
                     return render_template('Login.html')
             except mysql.connector.Error as err:
@@ -109,6 +121,10 @@ def success_page():
 def dashboard_page():
     # Section where template for html is declared
     return render_template('UserDashboard.html')
+
+@app.route('/admin_dashboard', methods=['GET'])
+def admin_dashboard():
+    return render_template('AdminDashboard.html')
 
 @app.route('/signup', methods=['GET'])
 def signup_page():
@@ -173,7 +189,7 @@ def submit_signup():
                 hashed_password = generate_password_hash(password)
                 # Insert the account into the users database
                 cursor.execute(
-                    "INSERT INTO users (ID, role, Username, Password, status, FirstName, LastName) "
+                    "INSERT INTO LoginData (ID, role, Username, Password, status, FirstName, LastName) "
                     "VALUES (%s, %s, %s, %s, %s, %s, %s)",
                     (employeeId, 'user', username, hashed_password, 'active', firstName, lastName)
                 )
