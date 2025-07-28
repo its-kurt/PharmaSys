@@ -45,6 +45,7 @@ def submit_form():
 
         errors = []
 
+
         # Server-side validation logic
         if not employeeId:
             errors.append("employeeId is required.")
@@ -58,8 +59,8 @@ def submit_form():
 
         if not password:
             errors.append("Password is required.")
-        elif len(password) < 8:
-            errors.append("Password must be at least 8 characters long.")
+        elif len(password) < 3:
+            errors.append("Password must be at least 3 characters long.")
 
         if errors:
             # If validation fails, re-render the form with error messages
@@ -76,14 +77,17 @@ def submit_form():
                 cursor = connection.cursor(dictionary=True)  # fetch results as a dict instead of tuple
                 # Verify credentials instead of inserting
                 cursor.execute(
-                    "SELECT ID, Password, role FROM LoginData WHERE ID=%s",
-                    (employeeId,)
+                    "SELECT ID, Password, role FROM LoginData WHERE ID=%s AND Username=%s",
+                    (employeeId, username)
                 )
                 user = cursor.fetchone()
-                if user and check_password_hash(user['Password'], password):
+                if user and user['Password'] == password:
+                    #console brute force testing
+                    print("Input password:", password)
+                    print("Stored hash:", user['Password'])
                     role = user.get('role', '').lower()
                     flash('Login successful!', 'success')
-                    if role == 'admin':
+                    if role == 'Admin':
                         print("Admin Detected")
                         return redirect(url_for('admin_dashboard'))
                     elif role == 'user':
@@ -185,13 +189,14 @@ def submit_signup():
                 print("Inserting new user:", employeeId, username)
                 connection = mysql.connector.connect(**db_config)
                 cursor = connection.cursor()
-                # hash password before storing
-                hashed_password = generate_password_hash(password)
+                #disabled password hashing temporarily for prototyping
+                    ### hash password before storing
+                    ##hashed_password = generate_password_hash(password)
                 # Insert the account into the users database
                 cursor.execute(
                     "INSERT INTO LoginData (ID, role, Username, Password, status, FirstName, LastName) "
                     "VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                    (employeeId, 'user', username, hashed_password, 'active', firstName, lastName)
+                    (employeeId, 'user', username, password, 'active', firstName, lastName)
                 )
                 connection.commit()
                 flash('Account created successfully!', 'success')
