@@ -84,7 +84,6 @@ def submit_form():
                 if user and user['Password'] == password:
                     #console brute force testing
                     print("Input password:", password)
-                    print("Stored hash:", user['Password'])
                     role = user.get('role', '').lower()
                     flash('Login successful!', 'success')
                     if role == 'Admin':
@@ -189,7 +188,7 @@ def submit_signup():
                 print("Inserting new user:", employeeId, username)
                 connection = mysql.connector.connect(**db_config)
                 cursor = connection.cursor()
-                #disabled password hashing temporarily for prototyping
+                #disabled password hashing temporarily for prototyping [IMPORTANT BTW]
                     ### hash password before storing
                     ##hashed_password = generate_password_hash(password)
                 # Insert the account into the users database
