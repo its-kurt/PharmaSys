@@ -12,7 +12,7 @@ VScode
 python (install flask, cursor and mysql python)
 
 Instructions on how to start application:
-1. Install XAMPP and run the APACHE server on ports 8080. This can be modified in the first config file (httpd.conf), and search for "Listen 80" and "Servername localhost:80"
+1. Install XAMPP and run the APACHE server on ports 8080. This can be modified in the first config file (httpd.conf), and search for "Listen 80" and "Servername localhost:80". Do not forget to modify the my.ini file of mysql too on XAMPP, and change the targets 3306 to 3307.
 2. Modify "C:\xampp\phpMyAdmin\config.inc.php" and add "$cfg['Servers'][$i]['port'] = '3307';" to register the new port
 3. import the databases to PHPMYADMIN in "http://localhost:8080/phpmyadmin"
 4. Make sure that Python is installed, and mysql.connector and flask is installed with pip install in the terminal
