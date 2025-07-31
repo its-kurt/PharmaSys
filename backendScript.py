@@ -163,8 +163,8 @@ def submit_signup():
             errors.append("Username must be at least 3 characters long.")
         if not password:
             errors.append("Password is required.")
-        elif len(password) < 8:
-            errors.append("Password must be at least 8 characters long.")
+        elif len(password) < 6:
+            errors.append("Password must be at least 6 characters long.")
         if not confirmPassword:
             errors.append("Please confirm your password.")
         elif password != confirmPassword:
