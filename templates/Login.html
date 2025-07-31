@@ -1,175 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link 
-        rel="stylesheet" 
-        href="TheBranding.css" 
-    >
-    <title>
-        PharmaSys Login
-    </title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Custom CSS variables if used in TheBranding.css or here */
-        :root {
-            --color-bg: #f0f8ff; /* A light cyan similar to bg-cyan-50 */
-            --color-text: #9ca3af; /* A gray for borders/placeholders */
-            --color-link: #3b82f6; /* A blue for links/buttons */
-            --color-button-bg: #4f7d98; /* A darker blue/cyan for button, similar to design */
-            --color-button-text: white;
-            --color-pharmacy-green: #34d399; /* Example green for logo background */
-        }
+    <!--This portion of the code declares the values that will be present in the header. The header is the text on the tab overview-->
+    <head>
+        <!--declare what are the characters involved-->
+        <meta charset="utf-8">
+        <!--This line is what declares the website to be flexible with the user's screen. without it, it cannot be cross compatible between phones and computers-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <!--Link to our custom utility CSS-->
+        <link   
+            rel="stylesheet" 
+            href="{{ url_for('static', filename='TheBranding.css') }}"
+        >
+        <!--below this is the line that will show on the page head-->
+        <title>
+            Dashboard
+        </title>
+    </head>
 
-        body {
-            font-family: Arial, sans-serif; /* Fallback font */
-            background-color: var(--color-bg);
-            color: black;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        .container-card {
-            background-color: white;
-            border-radius: 1rem; /* Adjust as needed for rounded corners */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Subtle shadow */
-            max-width: 24rem; /* Adjusted for a slightly wider card as in image */
-            width: 90%; /* Responsive width */
-            padding: 1.5rem; /* Padding inside the card */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem; /* Space between elements */
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            margin-bottom: 0.5rem; /* Space below the logo */
-            gap: 0.5rem; /* Space between logo and text */
-        }
-
-        .logo-container img {
-            width: 8rem; /* Adjust size of logo */
-            height: 8rem;
-            object-fit: contain;
-        }
-
-        .pharmacy-text {
-            font-size: 1.75rem; /* Adjust font size as needed */
-            font-weight: bold;
-            color: #333; /* Darker text color for heading */
-        }
-
-        .inventory-text {
-            font-size: 1.1rem; /* Adjust font size as needed */
-            font-weight: normal;
-            color: #555;
-            margin-top: -0.5rem; /* Pull up closer to pharmacy text */
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 0.75rem 1rem; /* Increased padding for height */
-            border: 1px solid var(--color-text); /* Lighter border */
-            border-radius: 0.5rem; /* Rounded corners for inputs */
-            box-sizing: border-box; /* Include padding in width */
-            font-size: 1rem;
-            color: #333;
-        }
-
-        .input-field::placeholder {
-            color: #999; /* Lighter placeholder text */
-        }
-
-        .login-button {
-            width: 100%;
-            padding: 0.75rem 1.5rem; /* Padding for button height */
-            border: none;
-            border-radius: 0.5rem;
-            background-color: var(--color-button-bg); /* Darker blue/cyan */
-            color: var(--color-button-text);
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .login-button:hover {
-            background-color: #3a6279; /* Slightly darker on hover */
-        }
-
-        .signup-link-container {
-            margin-top: 1rem;
-            text-align: center;
-            font-size: 0.95rem; /* Slightly larger text */
-        }
-
-        .signup-link {
-            color: var(--color-link);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .signup-link:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
 <body>
-    <main class="container-card">
-        <div class="logo-container">
-            <img src="assets/pharmacy_logo.png" alt="PharmaSys Logo">
-            <div>
-                <h1 class="pharmacy-text">[Pharmacy]</h1>
-                <p class="inventory-text">Inventory Database</p>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>PharmaSys</h1>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" data-tab="dashboard" class="nav-link active">Dashboard</a>
+            <a href="#" data-tab="users" class="nav-link">Users</a>
+            <a href="#" data-tab="inventory" class="nav-link">Inventory</a>
+            <a href="#" data-tab="receipts" class="nav-link">Receipts</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content">
+        <!-- Dashboard Tab -->
+        <section id="dashboard-section">
+            <h1 class="section-title">Dashboard</h1>
+            <div class="dashboard-card">
+                <div class="dashboard-info">
+                    <p id="current-admin"><strong>Logged in as:</strong> {{ current_user }}</p>
+                    <p id="account-count"><strong>Accounts registered:</strong> {{ user_count }}</p>
+                    <p id="time-on-screen"><strong>Time on screen:</strong> 0s</p>
+                </div>
+                <button id="logout-btn" class="logout-btn">Logout</button>
             </div>
-        </div>
-        
-        <form method="post" action="fillThisUpLater" style="width: 100%; display: flex; flex-direction: column; gap: 0.8rem;">
-            <input
-                id="employeeId"
-                name="employeeId"
-                type="text"
-                placeholder="Employee ID"
-                class="input-field"
-                required
-            />
-            <input
-                id="username"
-                name="username"
-                type="text"
-                placeholder="Username"
-                class="input-field"
-                required
-            />
-            <input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Password"
-                class="input-field"
-                required
-            />
-            <button
-                type="submit"
-                class="login-button"
-            >
-                Log In
-            </button>
-        </form>
-        
-        <div class="signup-link-container">
-            New Account? <a href="SignUp.html" class="signup-link">Sign up here!</a>
-        </div>
-        <div style="position: absolute; bottom: 1rem; left: 1rem;">
-            <button style="background: none; border: none; font-size: 2rem; color: #666; cursor: pointer;">
-                &#9664; </button>
-        </div>
+        </section>
+
+        <!-- Users Tab -->
+        <section id="users-section" class="hidden">
+            <h2 class="section-title">User Accounts</h2>
+            <div class="table-container">
+                <table id="users-table" class="data-table">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+                <div id="users-loading" class="loading-message">Loading user data...</div>
+            </div>
+        </section>
+
+        <!-- Inventory Tab -->
+        <section id="inventory-section" class="hidden">
+            <h2 class="section-title">Drug Inventory</h2>
+            <div class="table-container">
+                <table id="inventory-table" class="data-table">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+                <div id="inventory-loading" class="loading-message">Loading inventory data...</div>
+            </div>
+        </section>
+
+        <!-- Receipts Tab -->
+        <section id="receipts-section" class="hidden">
+            <h2 class="section-title">Receipts</h2>
+            <div class="table-container">
+                <table id="receipts-table" class="data-table">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+                <div id="receipts-loading" class="loading-message">Loading receipts data...</div>
+            </div>
+        </section>
     </main>
+
+    <script>
+        const startTime = Date.now();
+
+        // Tab navigation
+        document.querySelectorAll('.nav-link[data-tab]').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Update active link styling
+                document.querySelectorAll('.nav-link').forEach(function(navLink) {
+                    navLink.classList.remove('active');
+                });
+                this.classList.add('active');
+
+                // Show/hide sections
+                const tab = this.dataset.tab;
+                document.querySelectorAll('main section').forEach(function(section) {
+                    section.classList.add('hidden');
+                });
+                document.getElementById(tab + '-section').classList.remove('hidden');
+            });
+        });
+
+        // Update "time on screen" every second
+        setInterval(function() {
+            const secs = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('time-on-screen').innerHTML = '<strong>Time on screen:</strong> ' + secs + 's';
+        }, 1000);
+
+        // Logout button
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            window.location.href = 'LogIn.html';
+        });
+
+        // TODO: Replace the function below with a fetch() to call Flask endpoints returning JSON data
+        function populateTable(data, tableId, loadingId) {
+            const table = document.getElementById(tableId);
+            const loadingDiv = document.getElementById(loadingId);
+            const thead = table.querySelector('thead');
+            const tbody = table.querySelector('tbody');
+
+            if (!data || data.length === 0) {
+                if (loadingDiv) {
+                    loadingDiv.textContent = 'No data available';
+                }
+                return;
+            }
+
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+
+            // Create headers
+            const headerRow = document.createElement('tr');
+            Object.keys(data[0]).forEach(function(col) {
+                const th = document.createElement('th');
+                th.textContent = col.charAt(0).toUpperCase() + col.slice(1);
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+
+            // Create rows
+            data.forEach(function(row) {
+                const tr = document.createElement('tr');
+                Object.values(row).forEach(function(val) {
+                    const td = document.createElement('td');
+                    td.textContent = val || '';
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+
+            if (loadingDiv) {
+                loadingDiv.style.display = 'none';
+            }
+        }
+
+        // TODO: Fetch JSON from Flask endpoints and call populateTable()
+        // Example:
+        // fetch('/api/users')
+        //     .then(res => res.json())
+        //     .then(data => populateTable(data, 'users-table', 'users-loading'));
+
+    </script>
 </body>
 </html>
