@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+<!--Begin HTML page-->
 <html lang="en">
+
     <!--This portion of the code declares the values that will be present in the header. The header is the text on the tab overview-->
     <head>
         <!--declare what are the characters involved-->
@@ -13,158 +15,96 @@
         >
         <!--below this is the line that will show on the page head-->
         <title>
-            Dashboard
+            PharmaSys Login
         </title>
     </head>
 
-<body>
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <h1>PharmaSys</h1>
-        </div>
-        <nav class="sidebar-nav">
-            <a href="#" data-tab="dashboard" class="nav-link active">Dashboard</a>
-            <a href="#" data-tab="users" class="nav-link">Users</a>
-            <a href="#" data-tab="inventory" class="nav-link">Inventory</a>
-            <a href="#" data-tab="receipts" class="nav-link">Receipts</a>
-        </nav>
-    </aside>
-
-    <!-- MAIN CONTENT AREA -->
-    <main class="main-content">
-        <!-- Dashboard Tab -->
-        <section id="dashboard-section">
-            <h1 class="section-title">Dashboard</h1>
-            <div class="dashboard-card">
-                <div class="dashboard-info">
-                    <p id="current-admin"><strong>Logged in as:</strong> {{ current_user }}</p>
-                    <p id="account-count"><strong>Accounts registered:</strong> {{ user_count }}</p>
-                    <p id="time-on-screen"><strong>Time on screen:</strong> 0s</p>
+    <!--This portion of the code is the body initialization.
+    The class declaration creates the specifics that the application can work with, beginning with the color utilization and positioning-->
+    <body class="font-sans bg-cyan-50 text-black flex items-center justify-center" style="min-height: 100vh;">
+        <!--Since this is the log in page, we can squeeze the pad into a main class-->
+        <main class="container p-4" style=
+            "background-color: white; 
+            border: 1px solid var(--color-bg); 
+            border-radius: 1rem; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            max-width: 20rem; width: 100%;
+        ">
+            <!-- logo "feel free to swap out the logo to something else here"-->
+            <div class="flex justify-center mb-6">
+                <img 
+                    width="200"
+                    height="200"
+                    src="{{ url_for('static', filename='Assets/Logo.png') }}"
+                    alt="PharmaSys" 
+                    class="h-12"
+                />
+            </div>
+            <!--This is the first row of the program-->
+            <h1 class="m-4 text-black" style="font-size: 1.5rem; font-weight: 600; text-align: center;">
+                Login
+            </h1>
+            <!--This section is the initialization for the form entry for log in. 
+            Everything will be compiled and sent to the backend script immediately after pressing a button-->
+            <form class="m-2" method="post" action="/login">
+                <!--employee-->
+                <div class="m-2">
+                    <input
+                        id="employeeId"
+                        name="employeeId"
+                        type="text"
+                        placeholder="Employee ID"
+                        class="p-2"
+                        style="width: 100%; border: 1px solid var(--color-text); border-radius: 0.5rem;"
+                        required
+                    />
                 </div>
-                <button id="logout-btn" class="logout-btn">Logout</button>
+                <!--User-->
+                <div class="m-2">
+                    <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        placeholder="Username"
+                        class="p-2"
+                        style="width: 100%; border: 1px solid var(--color-text); border-radius: 0.5rem;"
+                        required
+                    />
+                </div>
+                <!--Password-->
+                <div class="m-2">
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="Password"
+                        class="p-2"
+                        style="width: 100%; border: 1px solid var(--color-text); border-radius: 0.5rem;"
+                        required
+                    />
+                </div>
+                <button
+                    type="submit"
+                    class="m-2 p-2 text-black"
+                    style="width: 100%; border: none; border-radius: 0.5rem; background-color: var(--color-link); color: white;"
+                >
+                    Log In
+                </button>
+            </form>
+            <!--The div function is how to create "classes" in html. This one creates a hyperlink section, divided from the rest of the script-->
+            <div class="m-4 flex justify-between" style="font-size: 0.875rem; color: var(--color-link);">
+                <!--The a function below is an anchor. This allows us to create href attributes
+                standing for Hyperlink, which can let us be redirected to the target website being indicated-->
+                <!--Lets use b instead of a for non anchor related text-->
+                <b>
+                    Forgot password?
+                </b>
+                <!--Same thing as above, almighty href. But this time, we patched that shit-->
+                <a href="{{ url_for('signup_page') }}" class="hover:underline" style="color: var(--color-link);">
+                    Create account
+                </a>
             </div>
-        </section>
+        </main>
+    </body>
 
-        <!-- Users Tab -->
-        <section id="users-section" class="hidden">
-            <h2 class="section-title">User Accounts</h2>
-            <div class="table-container">
-                <table id="users-table" class="data-table">
-                    <thead></thead>
-                    <tbody></tbody>
-                </table>
-                <div id="users-loading" class="loading-message">Loading user data...</div>
-            </div>
-        </section>
-
-        <!-- Inventory Tab -->
-        <section id="inventory-section" class="hidden">
-            <h2 class="section-title">Drug Inventory</h2>
-            <div class="table-container">
-                <table id="inventory-table" class="data-table">
-                    <thead></thead>
-                    <tbody></tbody>
-                </table>
-                <div id="inventory-loading" class="loading-message">Loading inventory data...</div>
-            </div>
-        </section>
-
-        <!-- Receipts Tab -->
-        <section id="receipts-section" class="hidden">
-            <h2 class="section-title">Receipts</h2>
-            <div class="table-container">
-                <table id="receipts-table" class="data-table">
-                    <thead></thead>
-                    <tbody></tbody>
-                </table>
-                <div id="receipts-loading" class="loading-message">Loading receipts data...</div>
-            </div>
-        </section>
-    </main>
-
-    <script>
-        const startTime = Date.now();
-
-        // Tab navigation
-        document.querySelectorAll('.nav-link[data-tab]').forEach(function(link) {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                // Update active link styling
-                document.querySelectorAll('.nav-link').forEach(function(navLink) {
-                    navLink.classList.remove('active');
-                });
-                this.classList.add('active');
-
-                // Show/hide sections
-                const tab = this.dataset.tab;
-                document.querySelectorAll('main section').forEach(function(section) {
-                    section.classList.add('hidden');
-                });
-                document.getElementById(tab + '-section').classList.remove('hidden');
-            });
-        });
-
-        // Update "time on screen" every second
-        setInterval(function() {
-            const secs = Math.floor((Date.now() - startTime) / 1000);
-            document.getElementById('time-on-screen').innerHTML = '<strong>Time on screen:</strong> ' + secs + 's';
-        }, 1000);
-
-        // Logout button
-        document.getElementById('logout-btn').addEventListener('click', function() {
-            window.location.href = 'Login.html';
-        });
-
-        // TODO: Replace the function below with a fetch() to call Flask endpoints returning JSON data
-        function populateTable(data, tableId, loadingId) {
-            const table = document.getElementById(tableId);
-            const loadingDiv = document.getElementById(loadingId);
-            const thead = table.querySelector('thead');
-            const tbody = table.querySelector('tbody');
-
-            if (!data || data.length === 0) {
-                if (loadingDiv) {
-                    loadingDiv.textContent = 'No data available';
-                }
-                return;
-            }
-
-            thead.innerHTML = '';
-            tbody.innerHTML = '';
-
-            // Create headers
-            const headerRow = document.createElement('tr');
-            Object.keys(data[0]).forEach(function(col) {
-                const th = document.createElement('th');
-                th.textContent = col.charAt(0).toUpperCase() + col.slice(1);
-                headerRow.appendChild(th);
-            });
-            thead.appendChild(headerRow);
-
-            // Create rows
-            data.forEach(function(row) {
-                const tr = document.createElement('tr');
-                Object.values(row).forEach(function(val) {
-                    const td = document.createElement('td');
-                    td.textContent = val || '';
-                    tr.appendChild(td);
-                });
-                tbody.appendChild(tr);
-            });
-
-            if (loadingDiv) {
-                loadingDiv.style.display = 'none';
-            }
-        }
-
-        // TODO: Fetch JSON from Flask endpoints and call populateTable()
-        // Example:
-        // fetch('/api/users')
-        //     .then(res => res.json())
-        //     .then(data => populateTable(data, 'users-table', 'users-loading'));
-
-    </script>
-</body>
 </html>
