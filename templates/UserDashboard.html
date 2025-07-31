@@ -25,7 +25,6 @@
         </div>
         <nav class="sidebar-nav">
             <a href="#" data-tab="dashboard" class="nav-link active">Dashboard</a>
-            <a href="#" data-tab="users" class="nav-link">Users</a>
             <a href="#" data-tab="inventory" class="nav-link">Inventory</a>
             <a href="#" data-tab="receipts" class="nav-link">Receipts</a>
         </nav>
@@ -43,18 +42,6 @@
                     <p id="time-on-screen"><strong>Time on screen:</strong> 0s</p>
                 </div>
                 <button id="logout-btn" class="logout-btn">Logout</button>
-            </div>
-        </section>
-
-        <!-- Users Tab -->
-        <section id="users-section" class="hidden">
-            <h2 class="section-title">User Accounts</h2>
-            <div class="table-container">
-                <table id="users-table" class="data-table">
-                    <thead></thead>
-                    <tbody></tbody>
-                </table>
-                <div id="users-loading" class="loading-message">Loading user data...</div>
             </div>
         </section>
 
@@ -114,7 +101,7 @@
 
         // Logout button
         document.getElementById('logout-btn').addEventListener('click', function() {
-            window.location.href = 'LogIn.html';
+            window.location.href = 'Login.html';
         });
 
         // TODO: Replace the function below with a fetch() to call Flask endpoints returning JSON data
@@ -161,10 +148,13 @@
 
         // TODO: Fetch JSON from Flask endpoints and call populateTable()
         // Example:
-        // fetch('/api/users')
+        // fetch('/api/inventory')
         //     .then(res => res.json())
-        //     .then(data => populateTable(data, 'users-table', 'users-loading'));
+        //     .then(data => populateTable(data, 'inventory-table', 'inventory-loading'));
 
+        // fetch('/api/receipts')
+        //     .then(res => res.json())
+        //     .then(data => populateTable(data, 'receipts-table', 'receipts-loading'));
     </script>
 </body>
 </html>
