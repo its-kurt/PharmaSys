@@ -166,7 +166,7 @@ def logout():
 def signup_page():
     # Renders the signup form page, which in this case, is SignUp.html
     return render_template('SignUp.html')
-
+#hello
 # This is where the signup will check
 @app.route('/signup', methods=['POST'])
 def submit_signup():
